@@ -3,7 +3,7 @@ import cv2
 #내장 카메라 연결
 cap = cv2.VideoCapture(0)
 
-#카메라가 정상적으로 연결이 되엇는지 확인
+#카메라가 정상적으로 연결이 되었는지 확인
 if not cap.isOpened():
     print("카메라를 열 수 없습니다.")
     exit()
