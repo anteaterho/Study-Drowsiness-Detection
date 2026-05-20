@@ -1,13 +1,25 @@
 /*
- * step_6_solenoid.ino
- * step_6_intergration_2.py / step_8_intergration_3.py 와 동일 프로토콜
- * (상세 주석·구현은 step_8_solenoid.ino 와 동일)
+ * step_8_solenoid.ino
+ * step_8_intergration_3.py 와 짝을 이루는 솔레노이드 제어 펌웨어
+ *
+ * 시리얼: 9600 baud
+ * 프로토콜:
+ *   'T' → 탭 시작 (80ms ON / 120ms OFF 반복)
+ *   'S' → 즉시 정지 (릴레이 OFF)
+ *
+ * 안전:
+ *   - 탭 시작 후 최대 5초(MAX_TAP_DURATION_MS) 경과 시 자동 정지
+ *   - Python(SOLENOID_MAX_DURATION=5.0)과 동일한 상한
+ *
+ * 배선:
+ *   - 릴레이 IN → Arduino D9 (로우레벨 트리거: LOW=ON, HIGH=OFF)
+ *   - 12V 솔레노이드는 릴레이·다이오드·별도 어댑터로 구동
  */
 
 const int RELAY_PIN = 9;
 
-const int TAP_ON_TIME  = 80;
-const int TAP_OFF_TIME = 120;
+const int TAP_ON_TIME  = 80;    // 솔레노이드 당김 시간 (ms)
+const int TAP_OFF_TIME = 120;   // 스프링 복귀 대기 (ms)
 const unsigned long MAX_TAP_DURATION_MS = 5000;
 
 bool tapping = false;
