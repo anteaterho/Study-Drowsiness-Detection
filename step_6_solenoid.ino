@@ -5,6 +5,8 @@
  */
 
 const int RELAY_PIN = 9;
+const int RELAY_ON_LEVEL = HIGH;
+const int RELAY_OFF_LEVEL = LOW;
 
 const int TAP_ON_TIME  = 80;
 const int TAP_OFF_TIME = 120;
@@ -16,12 +18,12 @@ unsigned long tapStartMillis = 0;
 unsigned long phaseStartMillis = 0;
 
 void relayOff() {
-    digitalWrite(RELAY_PIN, HIGH);
+    digitalWrite(RELAY_PIN, RELAY_OFF_LEVEL);
     solenoidOn = false;
 }
 
 void relayOn() {
-    digitalWrite(RELAY_PIN, LOW);
+    digitalWrite(RELAY_PIN, RELAY_ON_LEVEL);
     solenoidOn = true;
 }
 
@@ -76,6 +78,7 @@ void updateTapping() {
 }
 
 void setup() {
+    digitalWrite(RELAY_PIN, RELAY_OFF_LEVEL);
     pinMode(RELAY_PIN, OUTPUT);
     relayOff();
     Serial.begin(9600);

@@ -12,11 +12,14 @@
  *   - Python(SOLENOID_MAX_DURATION=5.0)과 동일한 상한
  *
  * 배선:
- *   - 릴레이 IN → Arduino D9 (로우레벨 트리거: LOW=ON, HIGH=OFF)
+ *   - 릴레이 IN → Arduino D9
  *   - 12V 솔레노이드는 릴레이·다이오드·별도 어댑터로 구동
+ *   - 솔레노이드 전원선은 릴레이 COM-NO 단자에 연결 (NC 사용 금지)
  */
 
 const int RELAY_PIN = 9;
+const int RELAY_ON_LEVEL = HIGH;  // 현재 릴레이 증상 기준: HIGH일 때 ON
+const int RELAY_OFF_LEVEL = LOW;  // 무신호/대기 상태에서 솔레노이드 OFF
 
 const int TAP_ON_TIME  = 80;    // 솔레노이드 당김 시간 (ms)
 const int TAP_OFF_TIME = 120;   // 스프링 복귀 대기 (ms)
@@ -28,12 +31,12 @@ unsigned long tapStartMillis = 0;
 unsigned long phaseStartMillis = 0;
 
 void relayOff() {
-    digitalWrite(RELAY_PIN, HIGH);
+    digitalWrite(RELAY_PIN, RELAY_OFF_LEVEL);
     solenoidOn = false;
 }
 
 void relayOn() {
-    digitalWrite(RELAY_PIN, LOW);
+    digitalWrite(RELAY_PIN, RELAY_ON_LEVEL);
     solenoidOn = true;
 }
 
@@ -88,6 +91,7 @@ void updateTapping() {
 }
 
 void setup() {
+    digitalWrite(RELAY_PIN, RELAY_OFF_LEVEL);
     pinMode(RELAY_PIN, OUTPUT);
     relayOff();
     Serial.begin(9600);
